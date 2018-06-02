@@ -1,0 +1,59 @@
+OS Development Project 
+
+Project Goals:
+To gain a better understanding of the OS domain
+To gain a better understanding of systems programming and specifically systems programming on the x86
+To understand the role of the kernel and the OS drivers in the greater system
+To understand the requirements of a general purpose modern microkernel
+To understand the role of non-core services in a microkernel design and to come up with an api to support general purpose computing functionality using a microkernel OS
+
+Project Scope:
+Develop a simple monolithic kernel OS with a limited scope
+Develop a set of basic device drivers for a subset of the hardware found in a modern x86 machine
+Develop a set of user mode utilities allowing trivial use of the the system hardware which the above drivers enable
+	- Including shell, text editing, network config, image viewing, time and date, file system tools; that sort of stuff
+	- More complex applications may be developed for the heck of it, but aren't part of the defined project scope
+
+Kernel Design Goals:
+x86 compatible (32bit only)
+preemptable multitasking
+single core
+3GB per-process virtual address space
+dynamic linking
+double buffered 32-bbp framebuffer
+ELF loading
+abstract filesystem
+booted from GRUB v1
+TCP stack
+demand physical memory paging
+time and date
+sound mixing
+
+Device Driver Goals:
+SATA HDD
+USB Mass Storage Device
+FAT32 and Ext2 filesystem drivers
+Network Card
+Sound Card
+USB Mouse and Keyboard Input
+
+User Applications:
+Shell text
+Shell graphical
+Compositor
+Window manager
+GUI toolkit
+Text editor
+Network configuration tool
+Image viwer
+
+Stage 1:
+Process creation
+- Grub initrd
+- ELF loader
+- Per process address space
+No multitask
+Text mode
+vtty driver for text mode (provides 1 stream handle, gives to user mode process as stdout and stderr)
+Test shell (for text mode) with test print
+

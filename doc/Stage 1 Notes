@@ -1,0 +1,100 @@
+kernal_main()
+	- initialize the graphics device - for now vbe text mode
+	- initialize kernel print functions
+	- initialize cpu descriptors (GDT)
+	- initialize cpu interrupt table (IDT)
+	- initialize user mode
+	- load bin for shell from initrd
+	- switch into shell process
+
+shell_main() *DONE*
+	- print user "Hello, world!"
+	- test system call
+	- htl or busy loop (htl should GP in user mode, busy loop allows user to see printed message)
+
+API commands *DONE*
+	- test_write(byte)
+		- write a character to a test stream (virtual tty)
+	- test()
+		- kernel prints "SYSCALL OK!" to the test stream
+
+vbe text driver *DONE*
+	- initialize()
+		- setup display
+	- set_color()
+		- set foreground and backgroup color for subsequent calls to put_char and clear
+	- line_feed()
+		- put cursor at the left most column of the next line, if end of screen, scroll screen up one line
+	- put_char(char)
+		- set the char at the cursor location to char, advance cursor line feed if cursor reaches end of line
+	- clear()
+		- clear the screen, set cursor location to top left
+
+kernel print *DONE*
+	- printf(format_string, ...)
+		- print formated output to the hardcoded terminal out
+
+kernel general *DONE*
+	- kernel_panic(message_string)
+		- prints "Kernel Panic!" prints the message_string then halts the processor
+
+processor driver
+	- initialize_state
+		- setup descriptors, flush registers
+	- prepare_usermode
+	- jump_usermode(void* ip)
+
+interrupts *DONE*
+	- initialize_interrupts
+
+exception *DONE*
+	- install_handler(exception, func)
+
+syscall *DONE*
+	- register_syscall(id, func)
+
+kernel physical_mman *DONE*
+	- initialize
+		- initialize from multiboot memory map
+	- alloc
+		- allocate any page, returns page base address
+	- dealloc(page_base)
+		- free the page with page base address page_base
+
+kernel virtual_mman *DONE*
+	- mmap(virtual_address, physical_address)
+		- map the page in vmem with base virtual_address to the page in pmem with base physical_address (virtual_address must be in kernel heap)
+	- umap(virtual_address)
+		- unmap the page at the with base virtual_address from the currently mapped pmem page
+
+kernel interrupt *DONE*
+	- install(vector_num, func)
+		- when interrupt vector vector_num is triggered, execute function at function pointer func
+
+kernel elf loader
+	- load(base, limit)
+		- parse buffer from base to limit as an elf file, load it into the current user vaddress space
+
+kernel process manager
+	- init_context(entry_point)
+		- create process context to start execution at the given point
+	- switch_context(context)
+		- jump to execution state defined by context
+
+System Call implementation
+System calls will be software interrupts. For the initial test, these will be hardcoded into the shell binary.
+As is standard with interrupt SysCalls, before switching to usermode the the kernel esp for the task will be set in a TSS and the task register will be loaded with the TSS selector. This tell the CPU to use that TSS when an interrupt is fired, which in turn sets the stack segment and pointer for the interrupt handler. 
+
+Memory Map
+
+0 -> reserved limit = reserved
+reserved limit -> kernel stack base = user space
+(kernel static base - kernel stack limit) -> kernel static base = kernel stack (process local)
+kernel static base -> (kernel static base + kernel static limit) = kernel code
+(kernel static base + kernel static limit) -> (0xFFFFFFFF) = kernel heap
+
+The virtual address space from the end of the reserved ram in the first meg to the kernel static base (higher half) is process local. Each process maps this differently. This includes a kernel stack which is system only (ring 0) but in the process local virtual memory.
+The kernel static data is then mapped from the higher half base to whereever it ends (depends how big the kernel binary is), this is mapped identically in every address space and never paged out. Then the remainder of the virtual memory is allocated for the kernel heap for dynamic allocated kernel data structures.
+
+
+
