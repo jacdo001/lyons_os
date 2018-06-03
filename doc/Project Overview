@@ -1,4 +1,4 @@
-OS Development Project 
+OS Development Project
 
 Project Goals:
 To gain a better understanding of the OS domain
@@ -16,7 +16,7 @@ Develop a set of user mode utilities allowing trivial use of the the system hard
 
 Kernel Design Goals:
 x86 compatible (32bit only)
-preemptable multitasking
+preemptive multitasking
 single core
 3GB per-process virtual address space
 dynamic linking
@@ -56,4 +56,11 @@ No multitask
 Text mode
 vtty driver for text mode (provides 1 stream handle, gives to user mode process as stdout and stderr)
 Test shell (for text mode) with test print
+# RESULTS
+Functionally complete - can launch a separately compiled application from within OS, runs in user mode, can syscall into kernel.
 
+Stage 2:
+Cooperative multitask
+Framebuffer text console
+Keyboard input
+Functional shell

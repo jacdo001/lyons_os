@@ -1,4 +1,4 @@
-kernal_main()
+kernal_main() *DONE*
 	- initialize the graphics device - for now vbe text mode
 	- initialize kernel print functions
 	- initialize cpu descriptors (GDT)
@@ -71,7 +71,7 @@ kernel interrupt *DONE*
 	- install(vector_num, func)
 		- when interrupt vector vector_num is triggered, execute function at function pointer func
 
-kernel elf loader
+kernel elf loader *DONE*
 	- load(base, limit)
 		- parse buffer from base to limit as an elf file, load it into the current user vaddress space
 
@@ -83,7 +83,7 @@ kernel process manager
 
 System Call implementation
 System calls will be software interrupts. For the initial test, these will be hardcoded into the shell binary.
-As is standard with interrupt SysCalls, before switching to usermode the the kernel esp for the task will be set in a TSS and the task register will be loaded with the TSS selector. This tell the CPU to use that TSS when an interrupt is fired, which in turn sets the stack segment and pointer for the interrupt handler. 
+As is standard with interrupt SysCalls, before switching to usermode the kernel esp for the task will be set in a TSS and the task register will be loaded with the TSS selector. This tell the CPU to use that TSS when an interrupt is fired, which in turn sets the stack segment and pointer for the interrupt handler.
 
 Memory Map
 
@@ -94,7 +94,7 @@ kernel static base -> (kernel static base + kernel static limit) = kernel code
 (kernel static base + kernel static limit) -> (0xFFFFFFFF) = kernel heap
 
 The virtual address space from the end of the reserved ram in the first meg to the kernel static base (higher half) is process local. Each process maps this differently. This includes a kernel stack which is system only (ring 0) but in the process local virtual memory.
-The kernel static data is then mapped from the higher half base to whereever it ends (depends how big the kernel binary is), this is mapped identically in every address space and never paged out. Then the remainder of the virtual memory is allocated for the kernel heap for dynamic allocated kernel data structures.
+The kernel static data is then mapped from the higher half base to where ever it ends (depends how big the kernel binary is), this is mapped identically in every address space and never paged out. Then the remainder of the virtual memory is allocated for the kernel heap for dynamic allocated kernel data structures.
 
 
 
