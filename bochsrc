@@ -723,7 +723,7 @@ ata3: enabled=0, ioaddr1=0x168, ioaddr2=0x360, irq=9
 #ata0-slave: type=cdrom, path=/dev/cdrom, status=inserted
 #ata0-slave: type=cdrom, path="drive", status=inserted
 #ata0-slave: type=cdrom, path=/dev/rcd0d, status=inserted
-ata0-slave: type=cdrom, path=/home/daniel/source/projects/lyons/stage1/lyons.iso, status=inserted
+ata0-slave: type=cdrom, path=./lyons.iso, status=inserted
 
 #=======================================================================
 # BOOT:
@@ -912,7 +912,7 @@ parport1: enabled=1, file="parport.out"
 # Example for different drivers:
 #   sound: waveoutdrv=sdl, waveindrv=alsa, midioutdrv=dummy
 #=======================================================================
-sound: driver=dummy, waveout=/dev/dsp. wavein=, midiout=
+#sound: driver=dummy, waveout=/dev/dsp. wavein=, midiout=
 
 #=======================================================================
 # SPEAKER:

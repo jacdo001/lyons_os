@@ -3,7 +3,7 @@
 #include "lyons/interrupt.h"
 #include "lyons/string.h"
 
-#define SYSCALL_COUNT 2
+#define SYSCALL_COUNT 3
 
 struct syscall_entry
 {
